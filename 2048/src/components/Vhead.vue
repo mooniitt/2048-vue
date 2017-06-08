@@ -12,6 +12,9 @@ import Restart from './Restart'
 		name:'vhead',
 		components:{
 			Score,Restart
+		},
+		mounted(){
+			
 		}
 	}	
 </script>

@@ -12,16 +12,44 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		left: ['200px', '100px', '300px', '300px', '100px', '200px', '0px'],
-		top: ['0px', '200px', '100px', '300px', '0px', '100px', '100px'],
 		color: ['#F2EEE3', '#BAAF92', '#FF8426', '#388186', '#4BA2AC', '#1D7D81', '#59569D'],
-		number: [1, 2, 3, 4, 1, 3, 3],
-		length: 7,
+		data: [
+			[
+				'0px', //left
+				'100px', //top
+				'#F2EEE3', //color
+				2, //number
+				0 //id
+			],
+			[
+				'100px',
+				'0px',
+				'#BAAF92',
+				4, 1
+			],
+			[
+				'200px',
+				'0px',
+				'#FF8426',
+				8, 2
+			],
+			[
+				'200px',
+				'100px',
+				'#388186',
+				2, 3
+			]
+		],
 		score: 0
+	},
+	getter: {
+
 	},
 	mutations: {
 		onLeft(state) {
 			mergeLeft(state)
+				// state.data.splice(0, 1)
+				// console.log(JSON.stringify(state.data))
 		},
 		onRight(state) {
 			mergeRight(state)
@@ -33,15 +61,14 @@ export default new Vuex.Store({
 			mergeDown(state)
 		},
 		score(state) {
-			var score = 0
-			state.number.forEach((n) => {
-				score += n
+			var sum = 0
+			state.data.forEach(s => {
+				sum += s[3]
 			})
-			console.log(score)
-			state.score = score
+			state.score = sum
 		},
 		restart(state) {
-			randomBlock(state)
+			console.log('random')
 		}
 	}
 })

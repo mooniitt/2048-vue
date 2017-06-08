@@ -1,10 +1,10 @@
 <template>
 	<div class="body">
-		<Vrect v-for='index in states.length' :key='index'
-				v-bind:left="states['left'][index-1]"
-		 		v-bind:top="states['top'][index-1]" 
-		 		v-bind:color="states['color'][index-1]" 
-		 		v-bind:number="states['number'][index-1]">
+		<Vrect v-for='(state,index) in states' :key="state[4]"
+				v-bind:left="state[0]"
+		 		v-bind:top="state[1]" 
+		 		v-bind:color="state[2]" 
+		 		v-bind:number="state[3]">
 		 </Vrect>
 	</div>
 </template>
@@ -15,7 +15,7 @@ import Vrect from './Vrect'
 		name:'body',
 		data(){
 			return {
-				
+
 			}
 		},
 		methods:{
@@ -23,8 +23,7 @@ import Vrect from './Vrect'
 		},
 		computed:{
 			states(){
-				console.log(this.$store.state.top)
-				return this.$store.state
+				return this.$store.state.data
 			}
 		},
 		components:{

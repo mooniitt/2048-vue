@@ -11,11 +11,6 @@ import Vbody from './Vbody'
 		name:'borard',
 		components:{
 			Vhead,Vbody
-		},
-		data(){
-			return {
-
-			}
 		}
 	}
 </script>

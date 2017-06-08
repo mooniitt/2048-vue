@@ -5,6 +5,9 @@
 </template>
 
 <script>
+
+
+
 import Borard from './components/Borard'
 export default {
   name: 'app',
@@ -17,30 +20,27 @@ export default {
         var code = e.keyCode
         switch(code){
           case 38:// 上
-          case 87:console.log('up')
+          case 87:
           this.$store.commit('onUp')
-          this.$store.commit('score')
           break 
           case 40:// 下
-          case 83:console.log('down')
+          case 83:
           this.$store.commit('onDown')
-          this.$store.commit('score')
           break
           case 37:// 左
-          case 65:console.log('left')
+          case 65:
           this.$store.commit('onLeft')
-          this.$store.commit('score')
           break
           case 39:// 右
-          case 68:console.log('right')
+          case 68:
           this.$store.commit('onRight')
-          this.$store.commit('score')
           break
           case 82:
           this.$store.commit('restart')
           break
           default:break
         }
+        this.$store.commit('score')
       })
     }
   },
@@ -48,6 +48,7 @@ export default {
     this.control()
   }
 }
+  
 </script>
 
 <style>

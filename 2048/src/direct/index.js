@@ -1,17 +1,17 @@
-function color(val) {
+function color(data) {
 	var color = ''
-	switch (val) {
+	switch (data.number) {
 		case 2:
-			color = ''
+			color = '#F2EEE3'
 			break
 		case 4:
-			color = ''
+			color = '#BAAF92'
 			break
 		case 8:
-			color = ''
+			color = '#FF8426'
 			break
 		case 16:
-			color = ''
+			color = '#388186'
 			break
 		case 32:
 			color = ''
@@ -35,162 +35,28 @@ function color(val) {
 			color = ''
 			break
 	}
-	return color
+	return data
 }
 
 function row(state) {
-	var row = {
-		_1: [],
-		_2: [],
-		_3: [],
-		_4: []
-	}
-	for (var i = 0; i < state.length; i++) {
-		switch (state.top[i]) {
-			case '0px': //第一行
-				row._1.push({
-					location: state.left[i],
-					index: i,
-					value: state.number[i]
-				})
-				break
-			case '100px':
-				row._2.push({
-					location: state.left[i],
-					index: i,
-					value: state.number[i]
-				})
-				break
-			case '200px':
-				row._3.push({
-					location: state.left[i],
-					index: i,
-					value: state.number[i]
-				})
-				break
-			case '300px':
-				row._4.push({
-					location: state.left[i],
-					index: i,
-					value: state.number[i]
-				})
-				break
-			default:
-				break
-		}
-	}
-	return row
+
 }
 
 function _remove(state, item) {
-	state.length -= 1
-	state.left.splice(item, 1)
-	state.top.splice(item, 1)
-	state.color.splice(item, 1)
-	state.number.splice(item, 1)
+
 }
 
-function merge(state, rows) {
-	var row_after = rows,
-		arr = [],
-		i, single = [],
-		clearIndex = []
-	for (i = 1; i <= 4; i++) {
-		single = row_after['_' + i].sort((prv, cur) => {
-			return parseInt(prv.location) - parseInt(cur.location)
-		})
+function merge(state, rows) {}
 
-		// console.log(i + " : " + JSON.stringify(single))
-		switch (single.length) {
-			case 1:
-				single[0].location = '0px'
-				break
-			case 2:
-				single[0].location = '0px'
-				single[1].location = '100px'
-				console.log(i + " : " + JSON.stringify(state))
-				if (single[0].value === single[1].value) {
-					single[1].location = '0px'
-					single[1].value += single[1].value
-					state.number[single[1].index] = single[1].value
-					clearIndex.push(single[0].index)
-				}
-				console.log(i + " : " + JSON.stringify(state))
-				break
-			case 3:
-				single[0].location = '0px'
-				single[1].location = '100px'
-				single[2].location = '200px'
-				if (single[0].value === single[1].value) {
-					single[1].location = '0px'
-					single[2].location = '100px'
-					single[1].value += single[1].value
-					state.number[single[1].index] = single[1].value
-						// clearIndex.push(single[0].index)
-				} else if (single[1].value === single[2].value) {
-					single[2].location = '100px'
-					single[2].value += single[2].value
-					state.number[single[2].index] = single[2].value
-					clearIndex.push(single[1].index)
-				}
-				break
-			case 4:
-				single[0].location = '0px'
-				single[1].location = '100px'
-				single[2].location = '200px'
-				single[3].location = '300px'
-				if (single[0].value === single[1].value) {
-					single[1].location = '0px'
-					single[1].value += single[1].value
-					state.number[single[1].index] = single[1].value
-					clearIndex.push(single[0].index)
-					if (single[2].value === single[3].value) {
-						single[2].location = '100px'
-						single[3].location = '100px'
-						single[3].value += single[3].value
-						state.number[single[3].index] = single[3].value
-						clearIndex.push(single[2].index)
-					}
-				} else if (single[1].value === single[2].value) {
-					single[2].location = '100px'
-					single[2].value += single[2].value
-					state.number[single[2].index] = single[2].value
-					clearIndex.push(single[1].index)
-				} else if (single[2].value === single[3].value) {
-					single[3].location = '200px'
-					single[3].value += single[3].value
-					state.number[single[3].index] = single[3].value
-					clearIndex.push(single[2].index)
-				}
-				break
-			default:
-				break
-		}
-	}
-	setTimeout(() => {
-		clearIndex.forEach(val => {
-			_remove(state, val)
-		})
-	}, 300)
-	console.log(row_after)
-	arr = [...row_after._1, ...row_after._2, ...row_after._3, ...row_after._4]
-	return arr
-}
-
-function mergeLeft(states) {
+function mergeLeft(state) {
+	var data = state.data
+	data.splice(2, 1, [data[2][0], data[2][1], 'red', 2, data[2][4]])
 	console.log('mergeLeft')
-	var arr = []
-	var after = merge(states, row(states))
-	for (var i = 0; i < after.length; i++) {
-		states.left[after[i].index] = after[i].location
-	}
-	arr = [...states.left]
-	states.left = arr
 }
 
 function mergeRight(state) {
 	console.log('mergeRight')
-
+	state.data.splice(0, 1)
 }
 
 function mergeUp(state) {

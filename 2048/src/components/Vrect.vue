@@ -1,6 +1,5 @@
 <template>
 	<div class="vrect" >
-		<span>{{trigger}}</span>
 		<p>{{number}}</p>
 	</div>
 </template>
@@ -8,26 +7,22 @@
 <script>
 	export default{
 		name:'vrect',
-		computed:{
-			trigger(){
-				return this.left+this.top+this.color
+		props:['left','top','color','number'],
+		methods:{
+			move(){
+				const style = this.$el.style
+				style.left = this.left
+				style.top = this.top
+				style.backgroundColor =this.color
 			}
 		},
-		props:['left','top','color','number'],
 		updated(){	
-			const self = this,
-			owner = self.$el.style
-			owner.left = self.left		
-			owner.top = self.top
-			owner.backgroundColor = self.color 
-			console.log(this.left+":"+this.top+":"+this.color+":"+this.number)
+			this.move()
+			// console.log(this.left+":"+this.top+":"+this.color+":"+this.number)
 		},
 		mounted(){
-			var style = this.$el.style
-			style.left = this.left
-			style.top = this.top
-			style.backgroundColor =this.color
-			console.log(this.left+":"+this.top+":"+this.color+":"+this.number)
+			this.move()
+			// console.log(this.left+":"+this.top+":"+this.color+":"+this.number)
 		}
 	}
 </script>
