@@ -41,8 +41,12 @@ export default new Vuex.Store({
 		],
 		score: 0
 	},
-	getter: {
-
+	getters: {
+		datafilter: state => {
+			return state.data.sort((prev, cur) => {
+				return prev[4] - cur[4]
+			})
+		}
 	},
 	mutations: {
 		onLeft(state) {

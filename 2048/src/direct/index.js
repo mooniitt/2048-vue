@@ -107,6 +107,7 @@ function mergeDown(state) {
 		["0px", "0px", COLOR[8], 8, 2],
 		["100px", "0px", COLOR[4], 4, 1],
 		["0px", "100px", COLOR[16], 16, 0],
+		["0px", "300px", COLOR[2], 2, 4],
 		["0px", "200px", COLOR[2], 2, 3]
 	]
 	console.log(JSON.stringify(state.data))

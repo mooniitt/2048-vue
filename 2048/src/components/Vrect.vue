@@ -32,7 +32,7 @@
 			console.log("mounted")
 			setTimeout(()=>{
 				this.isBorn = false
-			},400)
+			},500)
 			// console.log(this.left+":"+this.top+":"+this.color+":"+this.number)
 		}
 	}
@@ -52,7 +52,8 @@
 	 transition: all .2s ease;
 }
 .born {
-	 animation: move .3s ease;
+	 transform: scale(0);
+	 animation: move .3s .15s ease forwards;
 }
 @keyframes move{
 	0% {transform: scale(0);opacity: 0}
