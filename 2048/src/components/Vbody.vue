@@ -1,11 +1,12 @@
 <template>
 	<div class="body">
-		<Vrect v-for='(state,index) in states' :key="state[4]"
-				v-bind:left="state[0]"
-		 		v-bind:top="state[1]" 
-		 		v-bind:color="state[2]" 
-		 		v-bind:number="state[3]">
-		 </Vrect>
+		<Vrect v-for='data of states'  
+			v-bind:key="data[4]" 
+			v-bind:left="data[0]"
+	 		v-bind:top="data[1]" 
+	 		v-bind:color="data[2]" 
+	 		v-bind:number="data[3]">
+	 	</Vrect>
 	</div>
 </template>
 
@@ -13,23 +14,20 @@
 import Vrect from './Vrect'
 	export default{
 		name:'body',
-		data(){
-			return {
-
-			}
-		},
-		methods:{
-			
-		},
 		computed:{
 			states(){
+				console.log(JSON.stringify(this.$store.state.data[1]))
 				return this.$store.state.data
 			}
 		},
 		components:{
 			Vrect
 		},
+		updated(){
+			console.log("body updated")
+		},
 		mounted(){
+			console.log("bodymounted")
 			// console.log(this.states)
 		}
 	}
