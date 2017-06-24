@@ -30,13 +30,19 @@ export default new Vuex.Store({
 				'100px',
 				'0px',
 				'#FF8426',
-				8, 2
+				3, 2
 			],
 			[
 				'300px',
 				'200px',
 				'#388186',
 				2, 3
+			],
+			[
+				'300px',
+				'0px',
+				'#388186',
+				4, 4
 			]
 		],
 		score: 0
@@ -71,5 +77,8 @@ export default new Vuex.Store({
 		restart(state) {
 			console.log('random')
 		}
+	},
+	actions: {
+
 	}
 })

@@ -26,107 +26,160 @@ function block(left, top, number) {
 	return [left, top, COLOR[number], number, _newId()]
 }
 
-function init(state) {
-	console.log(Math.pow(2, 11))
-	var data = state.data
-	data.splice(0, 1, block('0px', '0px', 2))
-	data.splice(1, 1, block('100px', '0px', 4))
-	data.splice(2, 1, block('200px', '0px', 8))
-	data.splice(3, 1, block('300px', '0px', 16))
+var removeId = [],
+	newBlock = {}
 
-	data.splice(4, 0, block('0px', '100px', 32))
-	data.splice(5, 0, block('100px', '100px', 64))
-	data.splice(6, 0, block('200px', '100px', 128))
-	data.splice(7, 0, block('300px', '100px', 256))
-
-	data.splice(8, 0, block('0px', '200px', 512))
-	console.log(data[i])
-
-
-	console.log(data[i])
-	data.splice(9, 0, block('100px', '200px', 1024))
-	data.splice(10, 0, block('200px', '200px', 2048))
-	data.splice(11, 0, block('300px', '200px', 2))
-
-	data.splice(12, 0, block('0px', '300px', 2))
-	data.splice(13, 0, block('100px', '300px', 2))
-	data.splice(14, 0, block('200px', '300px', 2))
-	data.splice(15, 0, block('300px', '300px', 2))
-
-}
-
-function _sort(state, dir) {
-	var arr = state.data.map(item => {
-			return item
+function _left(row) {
+	var arr = []
+	removeId = []
+	for (var i in row) {
+		row[i].sort((prev, cur) => {
+			return parseInt(prev[0]) - parseInt(cur[0])
 		})
-		// console.log(JSON.stringify(arr))
-		// console.log(arr.length)
-	switch (dir) {
-		case "down":
-			return arr.sort((prev, cur) => {
-				return parseInt(prev[0]) - parseInt(cur[0])
-			})
+		var _row = row[i]
+		for (var j = 0; j < _row.length; j++) {
+			_row[j][0] = j * 100 + "px"
+		}
+		switch (_row.length) {
+			case 2:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][0] = "0px"
+					removeId.push(_row[0][4])
+					removeId.push(_row[1][4])
+				}
+				break
+			case 3:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][0] = "0px"
+					_row[2][0] = "100px"
+					removeId.push(_row[0][4])
+					removeId.push(_row[1][4])
+				} else if (_row[1][3] == _row[2][3]) {
+					_row[2][0] = "100px"
+					removeId.push(_row[1][4])
+					removeId.push(_row[2][4])
+				}
+				break
+			case 4:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][0] = "0px"
+					removeId.push(_row[0][4])
+					removeId.push(_row[1][4])
+					if (_row[2][3] == _row[3][3]) {
+						_row[2][0] = "100px"
+						_row[3][0] = "100px"
+						removeId.push(_row[2][4])
+						removeId.push(_row[3][4])
+					}
+				} else if (_row[1][3] == _row[2][3]) {
+					_row[2][3] = "100px"
+					_row[3][3] = "200px"
+					removeId.push(_row[1][4])
+					removeId.push(_row[2][4])
+				} else if (_row[2][3] == _row[3][3]) {
+					_row[3][3] = "200px"
+					removeId.push(_row[2][4])
+					removeId.push(_row[3][4])
+				}
+				break
+			default:
+				break
+		}
 	}
+	console.log("..." + JSON.stringify(row))
+	for (var i in row) {
+		for (var j = 0; j < row[i].length; j++) {
+			arr.push(row[i][j])
+		}
+	}
+	console.log(JSON.stringify(removeId))
+	return arr.sort((prev, cur) => {
+		return prev[4] - cur[4]
+	})
 }
 
 function mergeLeft(state) {
 	var data = state.data
+	var row = {}
 	console.log('mergeLeft')
-	for (var i in data) {
+	for (var i = 0; i < data.length; i++) {
 		switch (data[i][1]) {
 			case '0px':
+				row[0] = row[0] ? row[0] : []
+				row[0].push(data[i])
 				break
 			case '100px':
-				// console.log(data[i])
+				row[1] = row[1] ? row[1] : []
+				row[1].push(data[i])
 				break
 			case '200px':
-				// console.log(data[i])
+				row[2] = row[2] ? row[2] : []
+				row[2].push(data[i])
 				break
 			case '300px':
-				// console.log(data[i])
+				row[3] = row[3] ? row[3] : []
+				row[3].push(data[i])
 				break
 		}
 	}
+	console.log(JSON.stringify(data))
+	var _data = _left(row);
+	// removeId = removeId.sort((prev, cur) => {
+	// 	return prev - cur
+	// }).map((item, index) => {
+	// 	return item - index
+	// })
+
+	console.log(JSON.stringify(removeId))
+
+	setTimeout(() => {
+		console.log(JSON.stringify(data))
+			// data.splice(1, 1)
+			// data.splice(3, 1, block("100px", "0px", 8))
+			// for (var i = 0; i < removeId.length; i++) {
+			// 	data.splice(removeId[i], 1)
+			// }
+		data.splice(1, 1)
+		data.splice(3, 1)
+		console.log(JSON.stringify(data))
+	}, 2200)
+
+
+
+	// data.splice(0, 1, ["0px", "100px", "#F2EEE3", 16, 0])
 }
 
 function mergeRight(state) {
 	console.log('mergeRight')
-	state.data.splice(0, 1)
+
 }
 
 function mergeUp(state) {
 	console.log('mergeUp')
-	init(state)
 }
 
 function mergeDown(state) {
 	console.log('mergeDown')
 	console.log(JSON.stringify(state.data))
-	var arr = _sort(state, 'down')
-	state.data = [
-		["0px", "0px", COLOR[8], 8, 2],
-		["100px", "0px", COLOR[4], 4, 1],
-		["0px", "100px", COLOR[16], 16, 0],
-		["0px", "300px", COLOR[2], 2, 4],
-		["0px", "200px", COLOR[2], 2, 3]
-	]
+		// var arr = _sort(state, 'down')
+
+	state.data.splice(0, 1, [
+		'0px', //left
+		'100px', //top
+		'#F2EEE3', //color
+		16, //number
+		0 //id
+	])
+	setTimeout(() => {
+		state.data.splice(0, 1, [
+			'0px', //left
+			'100px', //top
+			'#F2EEE3', //color
+			16, //number
+			4 //id
+		])
+	}, 200)
 	console.log(JSON.stringify(state.data))
-		// console.log(JSON.stringify(arr))
-
-	// state.data = {
-	// 	"1": ["300px", "100px", "#F2EEE3", 16],
-	// 	"2": ["200px", "0px", "#BAAF92", 4],
-	// 	"3": ["100px", "0px", "#FF8426", 8],
-	// 	"4": ["300px", "200px", "#388186", 2]
-	// }
-
-	// state.data = {
-	// 	"1": ["100px", "0px", "#FF8426", 8],
-	// 	"2": ["200px", "0px", "#BAAF92", 4],
-	// 	"3": ["300px", "100px", "#F2EEE3", 16],
-	// 	"4": ["300px", "200px", "#388186", 2]
-	// }
-
 }
 
 function randomBlock(state) {

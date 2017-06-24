@@ -16,7 +16,6 @@ import Vrect from './Vrect'
 		name:'body',
 		computed:{
 			states(){
-				console.log("------"+JSON.stringify(this.$store.getters.datafilter))
 				return this.$store.getters.datafilter
 			}
 		},

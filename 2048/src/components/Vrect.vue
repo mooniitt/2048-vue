@@ -56,7 +56,7 @@
 	 animation: move .3s .15s ease forwards;
 }
 @keyframes move{
-	0% {transform: scale(0);opacity: 0}
+	0% {transform: scale(0.5);opacity: 0.5}
 	80% {transform: scale(1.1);opacity: 0.5;}
 	100% {transform: scale(1);opacity: 1;}
 }
