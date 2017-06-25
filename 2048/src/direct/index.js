@@ -23,15 +23,20 @@ function singleId() {
 var _newId = singleId()
 
 function block(left, top, number) {
+	number += number
 	return [left, top, COLOR[number], number, _newId()]
 }
 
-var removeId = [],
-	newBlock = {}
+function update(data) {
+	for (var i = 0; i < data.length; i++) {
+		data.splice(i, 1, data[i])
+	}
+}
 
-function _left(row) {
+function _left(state, row) {
 	var arr = []
-	removeId = []
+	state.removeId = []
+	state.newBlock = []
 	for (var i in row) {
 		row[i].sort((prev, cur) => {
 			return parseInt(prev[0]) - parseInt(cur[0])
@@ -44,64 +49,264 @@ function _left(row) {
 			case 2:
 				if (_row[0][3] == _row[1][3]) {
 					_row[1][0] = "0px"
-					removeId.push(_row[0][4])
-					removeId.push(_row[1][4])
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
 				}
 				break
 			case 3:
 				if (_row[0][3] == _row[1][3]) {
 					_row[1][0] = "0px"
 					_row[2][0] = "100px"
-					removeId.push(_row[0][4])
-					removeId.push(_row[1][4])
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
 				} else if (_row[1][3] == _row[2][3]) {
 					_row[2][0] = "100px"
-					removeId.push(_row[1][4])
-					removeId.push(_row[2][4])
+					state.removeId.push(_row[1][4], _row[2][4])
+					state.newBlock.push(block(_row[1][0], _row[1][1], _row[1][3]))
 				}
 				break
 			case 4:
 				if (_row[0][3] == _row[1][3]) {
 					_row[1][0] = "0px"
-					removeId.push(_row[0][4])
-					removeId.push(_row[1][4])
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+
 					if (_row[2][3] == _row[3][3]) {
 						_row[2][0] = "100px"
 						_row[3][0] = "100px"
-						removeId.push(_row[2][4])
-						removeId.push(_row[3][4])
+						state.removeId.push(_row[2][4], _row[3][4])
+						state.newBlock.push(block(_row[2][0], _row[2][1], _row[2][3]))
 					}
 				} else if (_row[1][3] == _row[2][3]) {
-					_row[2][3] = "100px"
-					_row[3][3] = "200px"
-					removeId.push(_row[1][4])
-					removeId.push(_row[2][4])
+					_row[2][0] = "100px"
+					_row[3][0] = "200px"
+					state.removeId.push(_row[1][4], _row[2][4])
+					state.newBlock.push(block(_row[1][0], _row[1][1], _row[1][3]))
 				} else if (_row[2][3] == _row[3][3]) {
-					_row[3][3] = "200px"
-					removeId.push(_row[2][4])
-					removeId.push(_row[3][4])
+					_row[3][0] = "200px"
+					state.removeId.push(_row[2][4], _row[3][4])
+					state.newBlock.push(block(_row[2][0], _row[2][1], _row[2][3]))
 				}
 				break
 			default:
 				break
 		}
 	}
-	console.log("..." + JSON.stringify(row))
 	for (var i in row) {
 		for (var j = 0; j < row[i].length; j++) {
 			arr.push(row[i][j])
 		}
 	}
-	console.log(JSON.stringify(removeId))
-	return arr.sort((prev, cur) => {
-		return prev[4] - cur[4]
-	})
+	console.log("..." + JSON.stringify(row))
+	return arr
 }
 
-function mergeLeft(state) {
-	var data = state.data
+function _right(state, row) {
+	var arr = []
+	state.removeId = []
+	state.newBlock = []
+	for (var i in row) {
+		row[i].sort((prev, cur) => {
+			return parseInt(cur[0]) - parseInt(prev[0])
+		})
+		var _row = row[i]
+		for (var j = 0; j < _row.length; j++) {
+			_row[j][0] = 300 - j * 100 + "px"
+		}
+		switch (_row.length) {
+			case 2:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][0] = "300px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+				}
+				break
+			case 3:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][0] = "300px"
+					_row[2][0] = "200px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+				} else if (_row[1][3] == _row[2][3]) {
+					_row[2][0] = "200px"
+					state.removeId.push(_row[1][4], _row[2][4])
+					state.newBlock.push(block(_row[1][0], _row[1][1], _row[1][3]))
+				}
+				break
+			case 4:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][0] = "300px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+
+					if (_row[2][3] == _row[3][3]) {
+						_row[2][0] = "200px"
+						_row[3][0] = "200px"
+						state.removeId.push(_row[2][4], _row[3][4])
+						state.newBlock.push(block(_row[2][0], _row[2][1], _row[2][3]))
+					}
+				} else if (_row[1][3] == _row[2][3]) {
+					_row[2][0] = "200px"
+					_row[3][0] = "200px"
+					state.removeId.push(_row[1][4], _row[2][4])
+					state.newBlock.push(block(_row[1][0], _row[1][1], _row[1][3]))
+				} else if (_row[2][3] == _row[3][3]) {
+					_row[3][0] = "200px"
+					state.removeId.push(_row[2][4], _row[3][4])
+					state.newBlock.push(block(_row[2][0], _row[2][1], _row[2][3]))
+				}
+				break
+			default:
+				break
+		}
+	}
+	for (var i in row) {
+		for (var j = 0; j < row[i].length; j++) {
+			arr.push(row[i][j])
+		}
+	}
+	console.log("..." + JSON.stringify(row))
+	return arr
+}
+
+function _up(state, row) {
+	var arr = []
+	state.removeId = []
+	state.newBlock = []
+	for (var i in row) {
+		row[i].sort((prev, cur) => {
+			return parseInt(prev[1]) - parseInt(cur[1])
+		})
+		var _row = row[i]
+		for (var j = 0; j < _row.length; j++) {
+			_row[j][1] = j * 100 + "px"
+		}
+		switch (_row.length) {
+			case 2:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][1] = "0px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+				}
+				break
+			case 3:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][1] = "0px"
+					_row[2][1] = "100px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+				} else if (_row[1][3] == _row[2][3]) {
+					_row[2][1] = "100px"
+					state.removeId.push(_row[1][4], _row[2][4])
+					state.newBlock.push(block(_row[1][0], _row[1][1], _row[1][3]))
+				}
+				break
+			case 4:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][1] = "0px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+
+					if (_row[2][3] == _row[3][3]) {
+						_row[2][1] = "100px"
+						_row[3][1] = "100px"
+						state.removeId.push(_row[2][4], _row[3][4])
+						state.newBlock.push(block(_row[2][0], _row[2][1], _row[2][3]))
+					}
+				} else if (_row[1][3] == _row[2][3]) {
+					_row[2][1] = "100px"
+					_row[3][1] = "200px"
+					state.removeId.push(_row[1][4], _row[2][4])
+					state.newBlock.push(block(_row[1][0], _row[1][1], _row[1][3]))
+				} else if (_row[2][3] == _row[3][3]) {
+					_row[3][1] = "200px"
+					state.removeId.push(_row[2][4], _row[3][4])
+					state.newBlock.push(block(_row[2][0], _row[2][1], _row[2][3]))
+				}
+				break
+			default:
+				break
+		}
+	}
+	for (var i in row) {
+		for (var j = 0; j < row[i].length; j++) {
+			arr.push(row[i][j])
+		}
+	}
+	console.log("..." + JSON.stringify(row))
+	return arr
+}
+
+function _down(state, row) {
+	var arr = []
+	state.removeId = []
+	state.newBlock = []
+	for (var i in row) {
+		row[i].sort((prev, cur) => {
+			return parseInt(cur[1]) - parseInt(prev[1])
+		})
+		var _row = row[i]
+		for (var j = 0; j < _row.length; j++) {
+			_row[j][1] = 300 - j * 100 + "px"
+		}
+		switch (_row.length) {
+			case 2:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][1] = "300px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+				}
+				break
+			case 3:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][1] = "300px"
+					_row[2][1] = "200px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+				} else if (_row[1][3] == _row[2][3]) {
+					_row[2][1] = "200px"
+					state.removeId.push(_row[1][4], _row[2][4])
+					state.newBlock.push(block(_row[1][0], _row[1][1], _row[1][3]))
+				}
+				break
+			case 4:
+				if (_row[0][3] == _row[1][3]) {
+					_row[1][1] = "300px"
+					state.removeId.push(_row[0][4], _row[1][4])
+					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
+
+					if (_row[2][3] == _row[3][3]) {
+						_row[2][1] = "200px"
+						_row[3][1] = "200px"
+						state.removeId.push(_row[2][4], _row[3][4])
+						state.newBlock.push(block(_row[2][0], _row[2][1], _row[2][3]))
+					}
+				} else if (_row[1][3] == _row[2][3]) {
+					_row[2][1] = "200px"
+					_row[3][1] = "100px"
+					state.removeId.push(_row[1][4], _row[2][4])
+					state.newBlock.push(block(_row[1][0], _row[1][1], _row[1][3]))
+				} else if (_row[2][3] == _row[3][3]) {
+					_row[3][1] = "100px"
+					state.removeId.push(_row[2][4], _row[3][4])
+					state.newBlock.push(block(_row[2][0], _row[2][1], _row[2][3]))
+				}
+				break
+			default:
+				break
+		}
+	}
+	for (var i in row) {
+		for (var j = 0; j < row[i].length; j++) {
+			arr.push(row[i][j])
+		}
+	}
+	console.log("..." + JSON.stringify(row))
+	return arr
+}
+
+function _rowSelect(data) {
 	var row = {}
-	console.log('mergeLeft')
 	for (var i = 0; i < data.length; i++) {
 		switch (data[i][1]) {
 			case '0px':
@@ -122,83 +327,106 @@ function mergeLeft(state) {
 				break
 		}
 	}
-	console.log(JSON.stringify(data))
-	var _data = _left(row);
-	// removeId = removeId.sort((prev, cur) => {
-	// 	return prev - cur
-	// }).map((item, index) => {
-	// 	return item - index
-	// })
+	return row
+}
 
-	console.log(JSON.stringify(removeId))
+function _colSelect(data) {
+	var col = {}
+	for (var i = 0; i < data.length; i++) {
+		switch (data[i][0]) {
+			case '0px':
+				col[0] = col[0] ? col[0] : []
+				col[0].push(data[i])
+				break
+			case '100px':
+				col[1] = col[1] ? col[1] : []
+				col[1].push(data[i])
+				break
+			case '200px':
+				col[2] = col[2] ? col[2] : []
+				col[2].push(data[i])
+				break
+			case '300px':
+				col[3] = col[3] ? col[3] : []
+				col[3].push(data[i])
+				break
+		}
+	}
+	return col
+}
 
-	setTimeout(() => {
-		console.log(JSON.stringify(data))
-			// data.splice(1, 1)
-			// data.splice(3, 1, block("100px", "0px", 8))
-			// for (var i = 0; i < removeId.length; i++) {
-			// 	data.splice(removeId[i], 1)
-			// }
-		data.splice(1, 1)
-		data.splice(3, 1)
-		console.log(JSON.stringify(data))
-	}, 2200)
-
-
-
-	// data.splice(0, 1, ["0px", "100px", "#F2EEE3", 16, 0])
+function mergeLeft(state) {
+	var data = state.data
+	_left(state, _rowSelect(data))
+	update(data)
+	console.log('mergeLeft')
 }
 
 function mergeRight(state) {
+	var data = state.data
+	_right(state, _rowSelect(data))
+	update(data)
 	console.log('mergeRight')
-
 }
 
 function mergeUp(state) {
+	var data = state.data
+	_up(state, _colSelect(data))
+	update(data)
 	console.log('mergeUp')
 }
 
 function mergeDown(state) {
+	var data = state.data
+	_down(state, _colSelect(data))
+	update(data)
 	console.log('mergeDown')
-	console.log(JSON.stringify(state.data))
-		// var arr = _sort(state, 'down')
-
-	state.data.splice(0, 1, [
-		'0px', //left
-		'100px', //top
-		'#F2EEE3', //color
-		16, //number
-		0 //id
-	])
-	setTimeout(() => {
-		state.data.splice(0, 1, [
-			'0px', //left
-			'100px', //top
-			'#F2EEE3', //color
-			16, //number
-			4 //id
-		])
-	}, 200)
-	console.log(JSON.stringify(state.data))
 }
 
 function randomBlock(state) {
-	var init = {
-		left: ['0px'],
-		top: ['0px'],
-		color: ['#eee'],
-		number: [2],
-		length: 1,
-		score: 2
+	var arr = [],
+		tem = []
+	var data = state.data
+	for (var i = 0; i < 16; i++) {
+		arr.push(i)
 	}
-	state.left = init.left
-	state.top = init.top
-	state.color = init.color
-	state.number = init.number
-	state.length = init.length
-	state.score = init.score
+	for (i = 0; i < data.length; i++) {
+		tem.push(directMapNum(data[i][0], data[i][1]))
+	}
+	tem.sort((prev, cur) => {
+			return cur - prev
+		}
+		for (i = 0; i < tem.length; i++) {
+			arr.splice(tem[i], 1)
+		}
+		if (arr.length) {
+			var random = Math.floor(Math.random() * arr.length)
+			var val = Math.random() > 0.5 ? 1 : 2
+			console.log("random: " + random + " val: " + val)
+			var b = block(numMapDirect(random).left, numMapDirect(random).top, val)
+			data.splice(data.length, 1, b)
+		}
+		console.log(arr)
+	}
 }
 
+function directMapNum(left, top) {
+	var n, l, t
+	l = left.slice(0, 1) - 0
+	t = top.slice(0, 1) - 0
+	n = l + t * 4
+	return n
+}
+
+function numMapDirect(n) {
+	var left, top
+	top = Math.floor(n % 4)
+	left = n - 4 * left
+	return {
+		left: left * 100 + "px",
+		top: top * 100 + "px"
+	}
+}
 export {
 	mergeLeft,
 	mergeRight,

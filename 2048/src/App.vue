@@ -16,24 +16,27 @@ export default {
   },
   methods:{
     control(){
-      document.addEventListener('keyup',(e)=>{
+      document.addEventListener('keydown',(e)=>{
         var code = e.keyCode
         switch(code){
           case 38:// 上
           case 87:
-          this.$store.commit('onUp')
+          this.$store.dispatch("onUp")
           break 
           case 40:// 下
           case 83:
-          this.$store.commit('onDown')
+          // this.$store.dispatch('onDown')
+          this.$store.dispatch("onDown")
           break
           case 37:// 左
           case 65:
-          this.$store.commit('onLeft')
+          // this.$store.dispatch('onLeft')
+          this.$store.dispatch("onLeft")
           break
           case 39:// 右
           case 68:
-          this.$store.commit('onRight')
+          // this.$store.dispatch('onRight')
+          this.$store.dispatch("onRight")
           break
           case 82:
           this.$store.commit('restart')

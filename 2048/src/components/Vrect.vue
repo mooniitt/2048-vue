@@ -24,16 +24,12 @@
 		},
 		updated(){	
 			this.move()
-			console.log("updated")
-			// console.log(this.left+":"+this.top+":"+this.color+":"+this.number)
 		},
 		mounted(){
 			this.move()
-			console.log("mounted")
 			setTimeout(()=>{
 				this.isBorn = false
-			},500)
-			// console.log(this.left+":"+this.top+":"+this.color+":"+this.number)
+			},100)
 		}
 	}
 </script>
@@ -49,11 +45,11 @@
 	 left:300px;
 	 top: 200px;
 	 position: absolute;
-	 transition: all .2s ease;
+	 transition: all .1s ease;
 }
 .born {
 	 transform: scale(0);
-	 animation: move .3s .15s ease forwards;
+	 animation: move .05s .1s ease forwards;
 }
 @keyframes move{
 	0% {transform: scale(0.5);opacity: 0.5}

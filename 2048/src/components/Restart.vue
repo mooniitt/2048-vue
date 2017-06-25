@@ -7,14 +7,8 @@
 <script>
 	export default{
 		name:'btn',
-		data(){
-			return {
-
-			}
-		},
 		methods:{
 			restart(){
-				// console.log('restart')
 				this.$store.commit('restart')
 			}
 		}

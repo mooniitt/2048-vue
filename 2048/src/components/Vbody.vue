@@ -21,13 +21,6 @@ import Vrect from './Vrect'
 		},
 		components:{
 			Vrect
-		},
-		updated(){
-			console.log("body updated")
-		},
-		mounted(){
-			console.log("bodymounted")
-			// console.log(this.states)
 		}
 	}
 </script>
