@@ -5,18 +5,24 @@
 </template>
 
 <script>
-
-
-
 import Borard from './components/Borard'
 export default {
   name: 'app',
+  data(){
+    return {
+      btn:false
+    }
+  },
   components: {
     Borard
   },
   methods:{
     control(){
       document.addEventListener('keydown',(e)=>{
+        if(this.btn){
+
+        }
+        this.btn = true
         var code = e.keyCode
         switch(code){
           case 38:// 上
@@ -49,6 +55,7 @@ export default {
   },
   mounted(){
     this.control()
+    this.$store.commit("start")
   }
 }
   

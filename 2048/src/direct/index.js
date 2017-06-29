@@ -68,6 +68,8 @@ function _left(state, row) {
 			case 4:
 				if (_row[0][3] == _row[1][3]) {
 					_row[1][0] = "0px"
+					_row[2][0] = "100px"
+					_row[3][0] = "200px"
 					state.removeId.push(_row[0][4], _row[1][4])
 					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
 
@@ -136,6 +138,8 @@ function _right(state, row) {
 			case 4:
 				if (_row[0][3] == _row[1][3]) {
 					_row[1][0] = "300px"
+					_row[2][0] = "200px"
+					_row[3][0] = "100px"
 					state.removeId.push(_row[0][4], _row[1][4])
 					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
 
@@ -204,6 +208,8 @@ function _up(state, row) {
 			case 4:
 				if (_row[0][3] == _row[1][3]) {
 					_row[1][1] = "0px"
+					_row[2][1] = "100px"
+					_row[3][1] = "200px"
 					state.removeId.push(_row[0][4], _row[1][4])
 					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
 
@@ -272,6 +278,8 @@ function _down(state, row) {
 			case 4:
 				if (_row[0][3] == _row[1][3]) {
 					_row[1][1] = "300px"
+					_row[2][1] = "200px"
+					_row[3][1] = "100px"
 					state.removeId.push(_row[0][4], _row[1][4])
 					state.newBlock.push(block(_row[0][0], _row[0][1], _row[0][3]))
 
@@ -393,14 +401,17 @@ function randomBlock(state) {
 	for (i = 0; i < data.length; i++) {
 		tem.push(directMapNum(data[i][0], data[i][1]))
 	}
+	console.log("tem :" + tem)
 	tem.sort((prev, cur) => {
 		return cur - prev
 	})
 	for (i = 0; i < tem.length; i++) {
 		arr.splice(tem[i], 1)
 	}
+	console.log("arr :" + arr)
 	if (arr.length) {
-		var random = Math.floor(Math.random() * arr.length)
+		var random = arr[Math.floor(Math.random() * arr.length)]
+		console.log("random :" + random)
 		var val = Math.random() > 0.5 ? 1 : 2
 		console.log("random: " + random + " val: " + val)
 		var b = block(numMapDirect(random).left, numMapDirect(random).top, val)
@@ -419,8 +430,8 @@ function directMapNum(left, top) {
 
 function numMapDirect(n) {
 	var left, top
-	top = Math.floor(n % 4)
-	left = n - 4 * left
+	top = Math.floor(n / 4)
+	left = n - 4 * top
 	return {
 		left: left * 100 + "px",
 		top: top * 100 + "px"

@@ -12,45 +12,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		data: [
-			[
-				'300px', //left
-				'300px', //top
-				'#F2EEE3', //color
-				16, //number
-				0 //id
-			],
-			[
-				'200px',
-				'100px',
-				'#BAAF92',
-				4, 1
-			],
-			[
-				'200px',
-				'0px',
-				'#FF8426',
-				4, 2
-			],
-			[
-				'300px',
-				'100px',
-				'#388186',
-				4, 3
-			],
-			[
-				'300px',
-				'0px',
-				'#388186',
-				4, 4
-			]
-		],
+		data: [],
 		removeId: [],
 		newBlock: [],
 		score: 0
 	},
 	getters: {
 		datafilter: state => {
+
 			return state.data.sort((prev, cur) => {
 				return prev[4] - cur[4]
 			})
@@ -85,6 +54,9 @@ export default new Vuex.Store({
 			state.data = []
 			randomBlock(state)
 			console.log('random')
+		},
+		start(state) {
+			randomBlock(state)
 		}
 	},
 	actions: {
