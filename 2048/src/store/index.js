@@ -82,7 +82,8 @@ export default new Vuex.Store({
 			state.score = sum
 		},
 		restart(state) {
-			// randomBlock(state)
+			state.data = []
+			randomBlock(state)
 			console.log('random')
 		}
 	},

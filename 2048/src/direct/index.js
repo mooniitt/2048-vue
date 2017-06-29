@@ -394,20 +394,19 @@ function randomBlock(state) {
 		tem.push(directMapNum(data[i][0], data[i][1]))
 	}
 	tem.sort((prev, cur) => {
-			return cur - prev
-		}
-		for (i = 0; i < tem.length; i++) {
-			arr.splice(tem[i], 1)
-		}
-		if (arr.length) {
-			var random = Math.floor(Math.random() * arr.length)
-			var val = Math.random() > 0.5 ? 1 : 2
-			console.log("random: " + random + " val: " + val)
-			var b = block(numMapDirect(random).left, numMapDirect(random).top, val)
-			data.splice(data.length, 1, b)
-		}
-		console.log(arr)
+		return cur - prev
+	})
+	for (i = 0; i < tem.length; i++) {
+		arr.splice(tem[i], 1)
 	}
+	if (arr.length) {
+		var random = Math.floor(Math.random() * arr.length)
+		var val = Math.random() > 0.5 ? 1 : 2
+		console.log("random: " + random + " val: " + val)
+		var b = block(numMapDirect(random).left, numMapDirect(random).top, val)
+		data.splice(data.length, 1, b)
+	}
+	console.log(arr)
 }
 
 function directMapNum(left, top) {
