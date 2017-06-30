@@ -18,11 +18,7 @@ export default {
   },
   methods:{
     control(){
-      document.addEventListener('keydown',(e)=>{
-        if(this.btn){
-
-        }
-        this.btn = true
+      document.addEventListener('keyup',(e)=>{
         var code = e.keyCode
         switch(code){
           case 38:// 上
